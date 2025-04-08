@@ -3,7 +3,6 @@ package com.minh.shoemanagement;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.health.PackageHealthStats;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String NAME_DATABASE = "ShoeDb";
@@ -59,7 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_BILL = "bill";
     public static final String BILL_ID = "id";
     public static final String BILL_USER_ID = "user_id";
-    public static final String BILL_SHOE = "shoe_id";
+    public static final String BILL_SHOE_ID = "shoe_id";
     public static final String BILL_QUANTITY = "quantity";
     public static final String BILL_SIZE = "size";
     public static final String BILL_CREATED_DATE = "created_date";
@@ -68,11 +67,29 @@ public class DBHelper extends SQLiteOpenHelper {
             + "create table " + TABLE_BILL + " ( "
             + BILL_ID + " integer primary key autoincrement, "
             + BILL_USER_ID + " integer not null, "
-            + BILL_SHOE + " integer not null, "
+            + BILL_SHOE_ID + " integer not null, "
             + BILL_QUANTITY + " integer not null, "
             + BILL_SIZE + " integer not null, "
             + BILL_CREATED_DATE + " text not null, "
             + BILL_PAYMENT_DATE + " text not null, "
+            + "FOREIGN KEY(user_id) REFERENCES user(id), "
+            + "FOREIGN KEY(shoe_id) REFERENCES shoe(id) ); ";
+
+    public static final String TABLE_RATING = "rating";
+    public static final String RATING_ID = "id";
+    public static final String RATING_STAR = "star";
+    public static final String RATING_CONTENT = "content";
+    public static final String RATING_USER_ID = "user_id";
+    public static final String RATING_SHOE_ID = "shoe_id";
+    public static final String RATING_CREATED_DATE = "created_date";
+    private static final String CREATE_TABLE_RATING = ""
+            + "create table " + TABLE_RATING + " ( "
+            + RATING_ID + " integer primary key autoincrement, "
+            + RATING_STAR + " integer not null, "
+            + RATING_CONTENT + " text not null, "
+            + RATING_USER_ID + " integer not null, "
+            + RATING_SHOE_ID + " integer not null,"
+            + RATING_CREATED_DATE + " text not null, "
             + "FOREIGN KEY(user_id) REFERENCES user(id), "
             + "FOREIGN KEY(shoe_id) REFERENCES shoe(id) ); ";
 
@@ -87,6 +104,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_CATEGORY);
         db.execSQL(CREATE_TABLE_SHOE);
         db.execSQL(CREATE_TABLE_BILL);
+        db.execSQL(CREATE_TABLE_RATING);
     }
 
     @Override
