@@ -1,9 +1,12 @@
-package com.minh.shoemanagement;
+package com.minh.shoemanagement.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.minh.shoemanagement.entities.Category;
+import com.minh.shoemanagement.entities.User;
 
 public class MyDatabase {
     SQLiteDatabase database;
@@ -15,7 +18,7 @@ public class MyDatabase {
     }
 
     public Cursor getCategories(){
-        return database.query(DBHelper.TABLE_CATEGORY, null, null, null, null, null, null);;
+        return database.query(DBHelper.TABLE_CATEGORY, null, null, null, null, null, null);
     }
 
     public long addCategory(Category category){

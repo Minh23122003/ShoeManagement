@@ -1,4 +1,4 @@
-package com.minh.shoemanagement;
+package com.minh.shoemanagement.utils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

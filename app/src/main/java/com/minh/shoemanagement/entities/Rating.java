@@ -1,4 +1,4 @@
-package com.minh.shoemanagement;
+package com.minh.shoemanagement.entities;
 
 public class Rating {
     private long id;
