@@ -1,4 +1,4 @@
-package com.minh.shoemanagement;
+package com.minh.shoemanagement.entities;
 
 public class User {
     private long id;
@@ -7,6 +7,8 @@ public class User {
     private String name;
     private String address;
     private String phone;
+
+    //0 = user, 1 = admin
     private long isAdmin;
     private String createdDate;
 

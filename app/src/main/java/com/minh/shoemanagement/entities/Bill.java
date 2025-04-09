@@ -1,4 +1,4 @@
-package com.minh.shoemanagement;
+package com.minh.shoemanagement.entities;
 
 public class Bill {
     private long id;

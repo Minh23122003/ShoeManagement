@@ -1,0 +1,69 @@
+package com.minh.shoemanagement.activities.user.adapter;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.minh.shoemanagement.R;
+import com.minh.shoemanagement.entities.Shoe;
+
+import java.util.List;
+
+public class BestSellerShoeAdapter extends RecyclerView.Adapter<BestSellerShoeAdapter.ShoeViewHolder>{
+
+
+    private List<Shoe> shoeList;
+    private Context context;
+
+    public BestSellerShoeAdapter(List<Shoe> shoeList, Context context) {
+        this.shoeList = shoeList;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public ShoeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shoe, parent, false);
+        return new ShoeViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ShoeViewHolder holder, int position) {
+        Shoe shoe = shoeList.get(position);
+        if(shoe == null)return;
+
+        Glide.with(context).load(shoe.getImage()).into(holder.imageView);
+
+        holder.tvName.setText(shoe.getName());
+        holder.tvInformation.setText(shoe.getInformation());
+        holder.tvPrice.setText(String.valueOf(shoe.getPrice()));
+        holder.tvCategory.setText(shoe.getCategory().getName());
+    }
+
+    @Override
+    public int getItemCount() {
+        if(shoeList!=null)return shoeList.size();
+        return 0;
+    }
+
+    class ShoeViewHolder extends RecyclerView.ViewHolder{
+        private ImageView imageView;
+        private TextView tvName, tvInformation, tvPrice, tvCategory;
+
+        public ShoeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.imageViewShoe);
+            tvName = itemView.findViewById(R.id.textViewShoeName);
+            tvInformation = itemView.findViewById(R.id.textViewShoeInfo);
+            tvPrice = itemView.findViewById(R.id.textViewShoePrice);
+            tvCategory = itemView.findViewById(R.id.textViewShoeCategory);
+        }
+    }
+}
