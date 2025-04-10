@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String NAME_DATABASE = "ShoeDb";
+    private static final String NAME_DATABASE = "ShoeDatabase";
     public static final String TABLE_USER = "user";
     public static final String USER_ID = "id";
     public static final String USER_USERNAME = "username";
@@ -51,8 +51,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + SHOE_QUANTITY + " integer not null, "
             + SHOE_CATEGORY_ID + " integer not null, "
             + SHOE_PRICE + " integer not null, "
-            + SHOE_IMAGE + "text not null, "
-            + SHOE_NOTE + "text not null, "
+            + SHOE_IMAGE + " text not null, "
+            + SHOE_NOTE + " text not null, "
             + "FOREIGN KEY(category_id) REFERENCES category(id) ); ";
 
     public static final String TABLE_BILL = "bill";
