@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_weight="0"
+            android:paddingTop="10dp"
+            android:text="Quản lý giày"
+            android:textAlignment="center"
+            android:textSize="35dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/editTextAdminShoeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Nhập tên giày cần thêm"
+                android:inputType="text"
+                android:text="" />
+            <EditText
+                android:id="@+id/editTextAdminShoeInformation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Nhập thông tin giày"
+                android:inputType="text"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/editTextAdminShoeQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Nhập số lượng"
+                android:inputType="number"
+                android:text="" />
+
+            <EditText
+                android:id="@+id/editTextAdminShoePrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Nhập giá"
+                android:inputType="number"
+                android:text="" />
+            <EditText
+                android:id="@+id/editTextAdminShoeNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Nhập ghi chú"
+                android:inputType="text"
+                android:text="" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Danh mục" />
+
+                <Spinner
+                    android:id="@+id/spinnerCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAdminShoeImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#28b5c4"
+                android:text="Chọn hình ảnh" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <ImageView
+                    android:id="@+id/imageViewAdminShoe"
+                    android:layout_width="50dp"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="0"
+                    tools:srcCompat="@android:drawable/btn_dialog" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewAdminShoeError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:textColor="#ff0032" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnInsertAdminShoe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="#58b83f"
+                android:text="Thêm giày" />
+
+            <Button
+                android:id="@+id/btnUpdateAdminShoe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="#002bff"
+                android:text="Sửa giày" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnDeleteAdminShoe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="#ff0032"
+                android:text="Xóa giày" />
+
+            <Button
+                android:id="@+id/btnDeleteDataShoe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#a11cc4"
+                android:text="Xóa dữ liệu nhập" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:text="Danh sách giày"
+            android:textAlignment="center"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="Mã giày" />
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="Tên giày"
+                android:textAlignment="textStart" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listViewAdminShoe"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</ScrollView>

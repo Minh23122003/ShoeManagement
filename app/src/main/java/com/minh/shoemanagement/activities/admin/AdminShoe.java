@@ -1,28 +1,43 @@
 package com.minh.shoemanagement.activities.admin;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
+import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
+import com.cloudinary.utils.ObjectUtils;
 import com.minh.shoemanagement.R;
-import com.minh.shoemanagement.activities.admin.adapter.CategoryAdapter;
 import com.minh.shoemanagement.activities.admin.adapter.ShoeAdapter;
 import com.minh.shoemanagement.entities.Category;
 import com.minh.shoemanagement.entities.Shoe;
 import com.minh.shoemanagement.utils.DBHelper;
 import com.minh.shoemanagement.utils.MyDatabase;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminShoe extends AppCompatActivity {
     public static ArrayList<Shoe> shoes;
@@ -30,15 +45,19 @@ public class AdminShoe extends AppCompatActivity {
     ListView listView;
     Spinner spinner;
     public MyDatabase database;
-    Button btnInsert, btnUpdate, btnDelete, btnDeleteData;
+    Button btnInsert, btnUpdate, btnDelete, btnDeleteData, btnImage;
     EditText editTextName, editTextInformation, editTextQuantity, editTextPrice, editTextNote;
     TextView textViewError;
+    ImageView imageView;
     private static long pos = -1;
     private static long posCategory;
+    Cloudinary cloudinary;
+    private Uri imagePath;
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.aactivity_admin_shoe);
+//        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_admin_shoe);
 
         database = new MyDatabase(this);
         btnInsert = findViewById(R.id.btnInsertAdminShoe);
@@ -52,6 +71,16 @@ public class AdminShoe extends AppCompatActivity {
         editTextQuantity = findViewById(R.id.editTextAdminShoeQuantity);
         editTextPrice = findViewById(R.id.editTextAdminShoePrice);
         editTextNote = findViewById(R.id.editTextAdminShoeNote);
+        textViewError = findViewById(R.id.textViewAdminShoeError);
+        imageView = findViewById(R.id.imageViewAdminShoe);
+        btnImage = findViewById(R.id.btnAdminShoeImage);
+
+        Map config = new HashMap();
+        config.put("cloud_name", "dyehwnue5");
+        config.put("api_key", "944547956246838");
+        config.put("api_secret", "RoCUyh0je2qJ79EnJMhu-3cmyIY");
+        cloudinary = new Cloudinary(config);
+        MediaManager.init(this, config);
 
         loadCategories();
         ArrayList<String> arrayList = new ArrayList<>();
@@ -91,18 +120,45 @@ public class AdminShoe extends AppCompatActivity {
                     shoe.setQuantity(Long.parseLong(editTextQuantity.getText().toString()));
                     shoe.setPrice(Long.parseLong(editTextPrice.getText().toString()));
                     shoe.setNote(editTextNote.getText().toString());
-                    shoe.setImage("gege");
-                    shoe.setCategory(categories.get((int) posCategory));
+                    MediaManager.get().upload(imagePath).callback(new UploadCallback() {
+                        @Override
+                        public void onStart(String requestId) {
 
-                    if(database.insertShoe(shoe) != -1){
-                        loadShoes();
-                        textViewError.setText("");
-                        editTextName.setText("");
-                        editTextInformation.setText("");
-                        editTextQuantity.setText("");
-                        editTextPrice.setText("");
-                        editTextNote.setText("");
-                    }
+                        }
+
+                        @Override
+                        public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(String requestId, Map resultData) {
+                            shoe.setImage(resultData.get("url").toString());
+                            shoe.setCategory(categories.get((int) posCategory));
+
+                            if(database.insertShoe(shoe) != -1){
+                                loadShoes();
+                                textViewError.setText("");
+                                editTextName.setText("");
+                                editTextInformation.setText("");
+                                editTextQuantity.setText("");
+                                editTextPrice.setText("");
+                                editTextNote.setText("");
+                                imageView.setImageBitmap(null);
+                            }
+                        }
+
+                        @Override
+                        public void onError(String requestId, ErrorInfo error) {
+
+                        }
+
+                        @Override
+                        public void onReschedule(String requestId, ErrorInfo error) {
+
+                        }
+                    }).dispatch();
+
                 }else{
                     textViewError.setText("Vui lòng nhập đầy đủ thông tin!");
                 }
@@ -118,6 +174,10 @@ public class AdminShoe extends AppCompatActivity {
                 editTextQuantity.setText(String.valueOf(shoes.get(position).getQuantity()));
                 editTextPrice.setText(String.valueOf(shoes.get(position).getPrice()));
                 editTextNote.setText(shoes.get(position).getNote());
+                for(int i = 0; i < categories.size(); i++){
+                    if(categories.get(i).getId() == shoes.get(position).getCategory().getId())
+                        spinner.setSelection(i);
+                }
             }
         });
 
@@ -194,8 +254,15 @@ public class AdminShoe extends AppCompatActivity {
             }
         });
 
-
+        btnImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageChooser();
+            }
+        });
     }
+
+
 
     public void loadShoes(){
         if(shoes == null){
@@ -243,4 +310,29 @@ public class AdminShoe extends AppCompatActivity {
             }
         }
     }
+    private void imageChooser(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        launchSomeActivity.launch(intent);
+
+    }
+
+    ActivityResultLauncher<Intent> launchSomeActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if(result.getResultCode() == Activity.RESULT_OK){
+            Intent data = result.getData();
+            if(data != null && data.getData() != null){
+                imagePath = data.getData();
+                Bitmap bitmap = null;
+                try{
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagePath);
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+                if(bitmap != null){
+                    imageView.setImageBitmap(bitmap);
+                }
+            }
+        }
+    });
 }
