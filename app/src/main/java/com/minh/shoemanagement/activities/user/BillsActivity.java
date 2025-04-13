@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,15 +52,16 @@ public class BillsActivity extends AppCompatActivity {
 
                 long billShoeId = billCursor.getLong(billCursor.getColumnIndexOrThrow(DBHelper.BILL_SHOE_ID));
                 Cursor shoeCursor = database.getShoeById(billShoeId);
+                if(shoeCursor!= null && shoeCursor.moveToFirst()){
+                    String shoeName = shoeCursor.getString(shoeCursor.getColumnIndexOrThrow(DBHelper.SHOE_NAME));
 
-                String shoeName = shoeCursor.getString(shoeCursor.getColumnIndexOrThrow(DBHelper.SHOE_NAME));
-                Shoe shoe = new Shoe();
-                shoe.setName(shoeName);
+                    Shoe shoe = new Shoe();
+                    shoe.setName(shoeName);
 
-                Bill bill = new Bill(billId, UserHome.currentUser, shoe, billQuantity, billSize, billCreatedDate, billPaymentDate);
+                    Bill bill = new Bill(billId, UserHome.currentUser, shoe, billQuantity, billSize, billCreatedDate, billPaymentDate);
 
-                billList.add(bill);
-
+                    billList.add(bill);
+                }
 
             }
         }
@@ -67,17 +69,17 @@ public class BillsActivity extends AppCompatActivity {
 
 
         //Load dữ liệu giả
-        Shoe shoe = new Shoe();
-        shoe.setName("Nikeeeee");
-        shoe.setPrice(250000);
-
-        Bill bill1 = new Bill(1, UserHome.currentUser, shoe, 2, 5, "11/4/2025", "12/4/2025");
-        Bill bill2 = new Bill(2, UserHome.currentUser, shoe, 2, 5, "11/4/2025", "12/4/2025");
-        Bill bill3 = new Bill(3, UserHome.currentUser, shoe, 2, 5, "11/4/2025", "12/4/2025");
-
-        billList.add(bill1);
-        billList.add(bill2);
-        billList.add(bill3);
+//        Shoe shoe = new Shoe();
+//        shoe.setName("Nikeeeee");
+//        shoe.setPrice(250000);
+//
+//        Bill bill1 = new Bill(1, UserHome.currentUser, shoe, 2, 5, "11/4/2025", "12/4/2025");
+//        Bill bill2 = new Bill(2, UserHome.currentUser, shoe, 2, 5, "11/4/2025", "12/4/2025");
+//        Bill bill3 = new Bill(3, UserHome.currentUser, shoe, 2, 5, "11/4/2025", "12/4/2025");
+//
+//        billList.add(bill1);
+//        billList.add(bill2);
+//        billList.add(bill3);
         //end Load dữ liệu giả
 
 

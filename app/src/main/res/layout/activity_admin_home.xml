@@ -52,15 +52,7 @@
             android:textColor="#FFFFFF"
             android:layout_marginBottom="16dp" />
 
-        <!-- Nút quản lý đánh giá -->
-        <Button
-            android:id="@+id/buttonManageRatings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Quản lý Đánh giá"
-            android:backgroundTint="#9C27B0"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="16dp" />
+
 
         <!-- Nút quản lý giày -->
         <Button
@@ -69,6 +61,15 @@
             android:layout_height="wrap_content"
             android:text="Quản lý Sản phẩm (Giày)"
             android:backgroundTint="#795548"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/buttonLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng xuất"
+            android:backgroundTint="#F44336"
             android:textColor="#FFFFFF" />
 
 

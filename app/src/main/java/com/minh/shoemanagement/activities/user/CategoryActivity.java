@@ -47,24 +47,11 @@ public class CategoryActivity extends AppCompatActivity {
             }
         }
 
-        //Tạo data giả
-        Category cate1 = new Category(1, "Giày thể thao");
-        Category cate2 = new Category(2, "Giày bóng đá");
-        Category cate3 = new Category(3, "Giày bóng rổ");
-        Category cate4 = new Category(4, "Giày thời trang nữ");
 
-        categories.add(cate1);
-        categories.add(cate2);
-        categories.add(cate3);
-        categories.add(cate4);
 
-        //
-
-        if(categories != null){
-            recycler = findViewById(R.id.recyclerCategory);
-            recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-            recycler.setAdapter(new CategoryAdapter(this,categories));
-        }
+        recycler = findViewById(R.id.recyclerCategory);
+        recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recycler.setAdapter(new CategoryAdapter(this, categories));
 
 
     }

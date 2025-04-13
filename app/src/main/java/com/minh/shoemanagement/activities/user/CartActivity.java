@@ -63,6 +63,7 @@ public class CartActivity extends AppCompatActivity {
                     shoe.setName(name);
                     shoe.setPrice(price);
                     shoe.setImage(image);
+                    shoe.setId(shoeId);
                 }
 
                 bill.setId(id);
@@ -71,22 +72,23 @@ public class CartActivity extends AppCompatActivity {
                 bill.setShoe(shoe);
                 bill.setCreatedDate(createdDate);
                 bill.setPaymentDate(paymentDate);
+                bill.setUser(UserHome.currentUser);
 
                 cartItemList.add(bill);
             }
         }
 
-        Category category = new Category(1, "Sport");
-
-        Shoe shoe = new Shoe(1, "Adidas", "adidas Sport", 200, category, 300000, "https://giaybongro.vn/upload/images/1011459600/86/4435_1735813672_thumb2.jpg", "adidas sport");
-
-        Bill bill1 = new Bill(1, UserHome.currentUser, shoe, 2, 2, "9/11/2025", "pending");
-        Bill bill2 = new Bill(2, UserHome.currentUser, shoe, 1, 2, "9/4/2025", "pending");
-        Bill bill3 = new Bill(3, UserHome.currentUser, shoe, 4, 2, "13/11/2025", "pending");
-
-        cartItemList.add(bill1);
-        cartItemList.add(bill2);
-        cartItemList.add(bill3);
+//        Category category = new Category(1, "Sport");
+//
+//        Shoe shoe = new Shoe(1, "Adidas", "adidas Sport", 200, category, 300000, "https://giaybongro.vn/upload/images/1011459600/86/4435_1735813672_thumb2.jpg", "adidas sport");
+//
+//        Bill bill1 = new Bill(1, UserHome.currentUser, shoe, 2, 2, "9/11/2025", "pending");
+//        Bill bill2 = new Bill(2, UserHome.currentUser, shoe, 1, 2, "9/4/2025", "pending");
+//        Bill bill3 = new Bill(3, UserHome.currentUser, shoe, 4, 2, "13/11/2025", "pending");
+//
+//        cartItemList.add(bill1);
+//        cartItemList.add(bill2);
+//        cartItemList.add(bill3);
 
         rcvCartItem.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rcvCartItem.setAdapter(new CartItemAdapter(this, cartItemList));

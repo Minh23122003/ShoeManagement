@@ -2,7 +2,9 @@ package com.minh.shoemanagement.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,14 +19,12 @@ import com.minh.shoemanagement.entities.User;
 import com.minh.shoemanagement.utils.DBHelper;
 import com.minh.shoemanagement.utils.MyDatabase;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class LoginActivity extends AppCompatActivity {
 
     //username và password mặc định để test
-    private final String adminUsername = "admin";
-    private final String adminPassword = "123";
-
-    private final String userUsername = "user";
-    private final String userPassword = "123";
 
 
     MyDatabase database;
@@ -66,6 +66,33 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void initAdmin (){
+        Cursor adminCursor = database.searchUserByUsername("admin");
+
+        if(adminCursor != null && adminCursor.moveToFirst()){
+            Log.d("Init admin", "initAdmin: base admin existed");
+        }else{
+            User user = new User();
+            user.setUsername("admin");
+            user.setPassword("123");
+            user.setName("admin");
+            user.setPhone("");
+            user.setAddress("");
+            user.setPhone("");
+            user.setIsAdmin(1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                user.setCreatedDate(formatter.format(LocalDate.now()));
+            }
+
+            if(database.addUser(user)!=-1){
+                Log.d("Init admin", "initAdmin: Init Successfully !");
+            }else{
+                Log.d("Init admin", "initAdmin: Init Fail !");
+            }
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         this.database = new MyDatabase(this);
+        initAdmin();
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
 

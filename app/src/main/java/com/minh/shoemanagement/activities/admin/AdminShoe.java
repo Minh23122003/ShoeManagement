@@ -27,6 +27,7 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.cloudinary.utils.ObjectUtils;
+
 import com.minh.shoemanagement.R;
 import com.minh.shoemanagement.activities.admin.adapter.ShoeAdapter;
 import com.minh.shoemanagement.entities.Category;
@@ -53,6 +54,7 @@ public class AdminShoe extends AppCompatActivity {
     private static long posCategory;
     Cloudinary cloudinary;
     private Uri imagePath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,7 +135,7 @@ public class AdminShoe extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(String requestId, Map resultData) {
-                            shoe.setImage(resultData.get("url").toString());
+                            shoe.setImage(resultData.get("secure_url").toString());
                             shoe.setCategory(categories.get((int) posCategory));
 
                             if(database.insertShoe(shoe) != -1){

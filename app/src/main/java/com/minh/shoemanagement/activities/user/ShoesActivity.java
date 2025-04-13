@@ -48,8 +48,7 @@ public class ShoesActivity extends AppCompatActivity {
         if(category != null){
             Cursor cursorShoe = database.getListShoeByCategory(category, edtSearch.getText().toString());
 
-            Toast.makeText(this, "Giá tị của EditText Search là " + edtSearch.getText().toString(), Toast.LENGTH_SHORT).show();
-            
+
             if (cursorShoe != null && cursorShoe.getCount() > 0){
                 while (cursorShoe.moveToNext()){
                     int shoesId = cursorShoe.getInt(cursorShoe.getColumnIndexOrThrow(DBHelper.SHOE_ID));
@@ -66,17 +65,17 @@ public class ShoesActivity extends AppCompatActivity {
             }
         }
 
-        Shoe shoe1 = new Shoe(1, "Nike 1", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1011459600/86/4435_1735813672_thumb2.jpg", "Sport shoes");
-        Shoe shoe2 = new Shoe(2, "Nike 2", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/5976_1734604728_thumb2.jpg", "Sport shoes");
-        Shoe shoe3 = new Shoe(3, "Nike 3", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/437_1734604908_thumb2.jpg", "Sport shoes");
-        Shoe shoe4 = new Shoe(4, "Nike 4", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/9625_1734604838_thumb2.jpg", "Sport shoes");
-        Shoe shoe5 = new Shoe(5, "Nike 5", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/43/9306_1727173532_thumb2.jpg", "Sport shoes");
-
-        shoesList.add(shoe1);
-        shoesList.add(shoe2);
-        shoesList.add(shoe3);
-        shoesList.add(shoe4);
-        shoesList.add(shoe5);
+//        Shoe shoe1 = new Shoe(1, "Nike 1", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1011459600/86/4435_1735813672_thumb2.jpg", "Sport shoes");
+//        Shoe shoe2 = new Shoe(2, "Nike 2", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/5976_1734604728_thumb2.jpg", "Sport shoes");
+//        Shoe shoe3 = new Shoe(3, "Nike 3", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/437_1734604908_thumb2.jpg", "Sport shoes");
+//        Shoe shoe4 = new Shoe(4, "Nike 4", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/9625_1734604838_thumb2.jpg", "Sport shoes");
+//        Shoe shoe5 = new Shoe(5, "Nike 5", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/43/9306_1727173532_thumb2.jpg", "Sport shoes");
+//
+//        shoesList.add(shoe1);
+//        shoesList.add(shoe2);
+//        shoesList.add(shoe3);
+//        shoesList.add(shoe4);
+//        shoesList.add(shoe5);
 
         recyclerView = findViewById(R.id.recyclerShoe);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));

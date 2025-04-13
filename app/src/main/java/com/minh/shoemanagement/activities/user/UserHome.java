@@ -92,19 +92,19 @@ public class UserHome extends AppCompatActivity {
         }
 
         //du lieu gia
-        Category category = new Category(1, "Sport");
-
-        Shoe shoe1 = new Shoe(1, "Nike 1", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1011459600/86/4435_1735813672_thumb2.jpg", "Sport shoes");
-        Shoe shoe2 = new Shoe(2, "Nike 2", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/5976_1734604728_thumb2.jpg", "Sport shoes");
-        Shoe shoe3 = new Shoe(3, "Nike 3", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/437_1734604908_thumb2.jpg", "Sport shoes");
-        Shoe shoe4 = new Shoe(4, "Nike 4", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/9625_1734604838_thumb2.jpg", "Sport shoes");
-        Shoe shoe5 = new Shoe(5, "Nike 5", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/43/9306_1727173532_thumb2.jpg", "Sport shoes");
-
-        bestSellerShoesList.add(shoe1);
-        bestSellerShoesList.add(shoe2);
-        bestSellerShoesList.add(shoe3);
-        bestSellerShoesList.add(shoe4);
-        bestSellerShoesList.add(shoe5);
+//        Category category = new Category(1, "Sport");
+//
+//        Shoe shoe1 = new Shoe(1, "Nike 1", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1011459600/86/4435_1735813672_thumb2.jpg", "Sport shoes");
+//        Shoe shoe2 = new Shoe(2, "Nike 2", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/5976_1734604728_thumb2.jpg", "Sport shoes");
+//        Shoe shoe3 = new Shoe(3, "Nike 3", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/437_1734604908_thumb2.jpg", "Sport shoes");
+//        Shoe shoe4 = new Shoe(4, "Nike 4", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/9625_1734604838_thumb2.jpg", "Sport shoes");
+//        Shoe shoe5 = new Shoe(5, "Nike 5", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/43/9306_1727173532_thumb2.jpg", "Sport shoes");
+//
+//        bestSellerShoesList.add(shoe1);
+//        bestSellerShoesList.add(shoe2);
+//        bestSellerShoesList.add(shoe3);
+//        bestSellerShoesList.add(shoe4);
+//        bestSellerShoesList.add(shoe5);
 
 
         if (bestSellerShoesList != null) {
@@ -130,7 +130,7 @@ public class UserHome extends AppCompatActivity {
                 long shoesPrice = cursorShoe.getLong(cursorShoe.getColumnIndexOrThrow(DBHelper.SHOE_PRICE));
                 long shoesQuantity = cursorShoe.getLong(cursorShoe.getColumnIndexOrThrow(DBHelper.SHOE_QUANTITY));
                 String shoesNote = cursorShoe.getString(cursorShoe.getColumnIndexOrThrow(DBHelper.SHOE_NOTE));
-                String shoesImage = cursorShoe.getString(cursorShoe.getColumnIndexOrThrow(DBHelper.SHOE_IMAGE));
+                String shoesImage = cursorShoe.getString(cursorShoe.getColumnIndexOrThrow(DBHelper.SHOE_IMAGE)).trim();
 
                 long cateId = cursorShoe.getLong(cursorShoe.getColumnIndexOrThrow(DBHelper.SHOE_CATEGORY_ID));
                 Cursor cursorCate = database.getCategoryById(cateId);
@@ -146,19 +146,20 @@ public class UserHome extends AppCompatActivity {
         }
 
         //du lieu gia
-        Category category = new Category(1, "Sport");
-
-        Shoe shoe1 = new Shoe(1, "Nike 1", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1011459600/86/4435_1735813672_thumb2.jpg", "Sport shoes");
-        Shoe shoe2 = new Shoe(2, "Nike 2", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/5976_1734604728_thumb2.jpg", "Sport shoes");
-        Shoe shoe3 = new Shoe(3, "Nike 3", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/437_1734604908_thumb2.jpg", "Sport shoes");
-        Shoe shoe4 = new Shoe(4, "Nike 4", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/9625_1734604838_thumb2.jpg", "Sport shoes");
-        Shoe shoe5 = new Shoe(5, "Nike 5", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/43/9306_1727173532_thumb2.jpg", "Sport shoes");
-
-        newShoesList.add(shoe1);
-        newShoesList.add(shoe2);
-        newShoesList.add(shoe3);
-        newShoesList.add(shoe4);
-        newShoesList.add(shoe5);
+//        Category category = new Category(1, "Sport");
+//
+//        Shoe shoe1 = new Shoe(1, "Nike 1", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1011459600/86/4435_1735813672_thumb2.jpg", "Sport shoes");
+//        Shoe shoe2 = new Shoe(2, "Nike 2", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/5976_1734604728_thumb2.jpg", "Sport shoes");
+//        Shoe shoe3 = new Shoe(3, "Nike 3", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/437_1734604908_thumb2.jpg", "Sport shoes");
+//        Shoe shoe4 = new Shoe(4, "Nike 4", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/60/9625_1734604838_thumb2.jpg", "Sport shoes");
+//        Shoe shoe5 = new Shoe(5, "Nike 5", "Info: Nike sport", 100, category, 500000, "https://giaybongro.vn/upload/images/1008781200/43/9306_1727173532_thumb2.jpg", "Sport shoes");
+//
+//
+//        newShoesList.add(shoe1);
+//        newShoesList.add(shoe2);
+//        newShoesList.add(shoe3);
+//        newShoesList.add(shoe4);
+//        newShoesList.add(shoe5);
 
 
         if (newShoesList != null) {
