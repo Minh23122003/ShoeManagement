@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -18,35 +22,33 @@ import com.minh.shoemanagement.entities.Shoe;
 
 import java.util.List;
 
-public class BestSellerShoeAdapter extends RecyclerView.Adapter<BestSellerShoeAdapter.ShoeViewHolder>{
+public class ShoesAdapter extends RecyclerView.Adapter<ShoesAdapter.ShoeViewHolder>{
 
-
-    private List<Shoe> shoeList;
     private Context context;
+    private List<Shoe> shoeList;
 
-    public BestSellerShoeAdapter(List<Shoe> shoeList, Context context) {
-        this.shoeList = shoeList;
+    public ShoesAdapter(Context context, List<Shoe> shoeList) {
         this.context = context;
+        this.shoeList = shoeList;
     }
 
     @NonNull
     @Override
     public ShoeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shoe, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_shoe, parent, false);
+
         return new ShoeViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ShoeViewHolder holder, int position) {
         Shoe shoe = shoeList.get(position);
-        if(shoe == null)return;
 
         Glide.with(context).load(shoe.getImage()).into(holder.imageView);
-
         holder.tvName.setText(shoe.getName());
-        holder.tvInformation.setText(shoe.getInformation());
+        holder.tvInfo.setText(shoe.getInformation());
         holder.tvPrice.setText(String.valueOf(shoe.getPrice()));
-        holder.tvCategory.setText(shoe.getCategory().getName());
+        holder.tvCategoryName.setText(shoe.getCategory().getName());
 
         holder.imageView.setOnClickListener(v -> {
 
@@ -60,21 +62,21 @@ public class BestSellerShoeAdapter extends RecyclerView.Adapter<BestSellerShoeAd
 
     @Override
     public int getItemCount() {
-        if(shoeList!=null)return shoeList.size();
-        return 0;
+        return shoeList.size();
     }
 
-    class ShoeViewHolder extends RecyclerView.ViewHolder{
+    class ShoeViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageView;
-        private TextView tvName, tvInformation, tvPrice, tvCategory;
+        private TextView tvName, tvInfo, tvPrice, tvCategoryName;
+
 
         public ShoeViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewShoe);
             tvName = itemView.findViewById(R.id.textViewShoeName);
-            tvInformation = itemView.findViewById(R.id.textViewShoeInfo);
+            tvInfo = itemView.findViewById(R.id.textViewShoeInfo);
             tvPrice = itemView.findViewById(R.id.textViewShoePrice);
-            tvCategory = itemView.findViewById(R.id.textViewShoeCategory);
+            tvCategoryName = itemView.findViewById(R.id.textViewShoeCategory);
         }
     }
 }

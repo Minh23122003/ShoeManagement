@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:gravity="center_horizontal">
+
+    <TextView android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bạn muốn tiếp tục mua sắm hay đến giỏ hàng ?"
+        android:textSize="20sp"/>
+
+    <Button android:id="@+id/buttonGoToCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Đến giỏ hàng"
+        android:textSize="20sp"
+        android:backgroundTint="#4CAF50"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="5dp"/>
+
+    <Button android:id="@+id/buttonContinue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tiếp tục xem giày"
+        android:textSize="20sp"
+        android:backgroundTint="#2196F3"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>

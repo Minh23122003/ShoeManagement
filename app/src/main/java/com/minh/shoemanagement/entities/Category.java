@@ -1,6 +1,10 @@
 package com.minh.shoemanagement.entities;
 
-public class Category {
+import java.io.Serializable;
+
+
+//implement Serializable for bind object Category between 2 Activities
+public class Category implements Serializable {
     private long id;
     private String name;
 

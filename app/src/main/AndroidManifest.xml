@@ -22,10 +22,15 @@
 
         <!--Các Activity của User-->
         <activity android:name=".activities.user.UserHome" />
+        <activity android:name=".activities.user.CategoryActivity" />
+        <activity android:name=".activities.user.ShoesActivity" />
+        <activity android:name=".activities.user.ShoesDetailActivity" />
+        <activity android:name=".activities.user.BillsActivity" />
+        <activity android:name=".activities.user.CartActivity" />
         <!--Các Activity của User-->
 
         <!--Activity dùng chung-->
-        <activity android:name=".activities.RegistryActivity" />
+        <activity android:name=".activities.RegisterActivity" />
 
         <!--Khi khởi động chương trình sẽ vào Activity Login trước-->
         <activity

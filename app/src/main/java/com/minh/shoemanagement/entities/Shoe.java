@@ -1,6 +1,9 @@
 package com.minh.shoemanagement.entities;
 
-public class Shoe {
+import java.io.Serializable;
+
+
+public class Shoe  implements  Serializable{
     private long id;
     private String name;
     private String information;

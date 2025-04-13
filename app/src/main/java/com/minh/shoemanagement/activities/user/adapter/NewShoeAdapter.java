@@ -1,6 +1,7 @@
 package com.minh.shoemanagement.activities.user.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.minh.shoemanagement.R;
+import com.minh.shoemanagement.activities.user.ShoesDetailActivity;
 import com.minh.shoemanagement.entities.Shoe;
 
 import java.util.List;
@@ -44,6 +46,15 @@ public class NewShoeAdapter extends RecyclerView.Adapter<NewShoeAdapter.ShoeView
         holder.tvInformation.setText(shoe.getInformation());
         holder.tvPrice.setText(String.valueOf(shoe.getPrice()));
         holder.tvCategory.setText(shoe.getCategory().getName());
+
+        holder.imageView.setOnClickListener(v -> {
+
+            // Chuyen den trang Shoes Detail
+            Intent intent = new Intent(context, ShoesDetailActivity.class);
+            intent.putExtra("shoesId", shoe.getId());
+
+            context.startActivity(intent);
+        });
     }
 
     @Override
