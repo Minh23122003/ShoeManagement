@@ -22,6 +22,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
@@ -53,7 +54,7 @@ public class AdminShoe extends AppCompatActivity {
     private static long pos = -1;
     private static long posCategory;
     Cloudinary cloudinary;
-    private Uri imagePath;
+    private Uri imagePath = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,51 +117,53 @@ public class AdminShoe extends AppCompatActivity {
                 editTextPrice.getText().toString().length() != 0 &&
                 editTextNote.getText().toString().length() != 0){
                     Shoe shoe = new Shoe();
-                    shoe.setId(-1);
+                    shoe.setId(pos);
                     shoe.setName(editTextName.getText().toString());
                     shoe.setInformation(editTextInformation.getText().toString());
                     shoe.setQuantity(Long.parseLong(editTextQuantity.getText().toString()));
                     shoe.setPrice(Long.parseLong(editTextPrice.getText().toString()));
                     shoe.setNote(editTextNote.getText().toString());
-                    MediaManager.get().upload(imagePath).callback(new UploadCallback() {
-                        @Override
-                        public void onStart(String requestId) {
+                    shoe.setCategory(categories.get((int) posCategory));
 
-                        }
+                    if(imagePath != null){
+                        MediaManager.get().upload(imagePath).callback(new UploadCallback() {
+                            @Override
+                            public void onStart(String requestId) {
 
-                        @Override
-                        public void onProgress(String requestId, long bytes, long totalBytes) {
-
-                        }
-
-                        @Override
-                        public void onSuccess(String requestId, Map resultData) {
-                            shoe.setImage(resultData.get("secure_url").toString());
-                            shoe.setCategory(categories.get((int) posCategory));
-
-                            if(database.insertShoe(shoe) != -1){
-                                loadShoes();
-                                textViewError.setText("");
-                                editTextName.setText("");
-                                editTextInformation.setText("");
-                                editTextQuantity.setText("");
-                                editTextPrice.setText("");
-                                editTextNote.setText("");
-                                imageView.setImageBitmap(null);
                             }
+
+                            @Override
+                            public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(String requestId, Map resultData) {
+                                shoe.setImage(resultData.get("secure_url").toString());
+
+                                if(database.insertShoe(shoe) != -1){
+                                    loadShoes();
+                                    deleteData();
+                                }
+                            }
+
+                            @Override
+                            public void onError(String requestId, ErrorInfo error) {
+
+                            }
+
+                            @Override
+                            public void onReschedule(String requestId, ErrorInfo error) {
+
+                            }
+                        }).dispatch();
+                    }else{
+                        shoe.setImage(shoes.get((int) pos).getImage());
+                        if(database.insertShoe(shoe) != -1){
+                            loadShoes();
+                            deleteData();
                         }
-
-                        @Override
-                        public void onError(String requestId, ErrorInfo error) {
-
-                        }
-
-                        @Override
-                        public void onReschedule(String requestId, ErrorInfo error) {
-
-                        }
-                    }).dispatch();
-
+                    }
                 }else{
                     textViewError.setText("Vui lòng nhập đầy đủ thông tin!");
                 }
@@ -170,7 +173,7 @@ public class AdminShoe extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                pos = shoes.get(position).getId();
+                pos = position;
                 editTextName.setText(shoes.get(position).getName());
                 editTextInformation.setText(shoes.get(position).getInformation());
                 editTextQuantity.setText(String.valueOf(shoes.get(position).getQuantity()));
@@ -180,6 +183,7 @@ public class AdminShoe extends AppCompatActivity {
                     if(categories.get(i).getId() == shoes.get(position).getCategory().getId())
                         spinner.setSelection(i);
                 }
+                Glide.with(getApplicationContext()).load(shoes.get(position).getImage()).into(imageView);
             }
         });
 
@@ -187,30 +191,57 @@ public class AdminShoe extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(pos != -1){
-                    if(editTextName.getText().toString().length() != 0 &&
-                            editTextInformation.getText().toString().length() != 0 &&
-                            editTextQuantity.getText().toString().length() != 0 &&
-                            editTextPrice.getText().toString().length() != 0 &&
-                            editTextNote.getText().toString().length() != 0){
+                    if(!editTextName.getText().toString().isEmpty() &&
+                            !editTextInformation.getText().toString().isEmpty() &&
+                            !editTextQuantity.getText().toString().isEmpty() &&
+                            !editTextPrice.getText().toString().isEmpty() &&
+                            !editTextNote.getText().toString().isEmpty()){
                         Shoe shoe = new Shoe();
-                        shoe.setId(pos);
+                        shoe.setId(shoes.get((int) pos).getId());
                         shoe.setName(editTextName.getText().toString());
                         shoe.setInformation(editTextInformation.getText().toString());
                         shoe.setQuantity(Long.parseLong(editTextQuantity.getText().toString()));
                         shoe.setPrice(Long.parseLong(editTextPrice.getText().toString()));
                         shoe.setNote(editTextNote.getText().toString());
-                        shoe.setImage("gege");
                         shoe.setCategory(categories.get((int) posCategory));
 
-                        if(database.updateShoe(shoe) != -1){
-                            loadShoes();
-                            textViewError.setText("");
-                            editTextName.setText("");
-                            editTextInformation.setText("");
-                            editTextQuantity.setText("");
-                            editTextPrice.setText("");
-                            editTextNote.setText("");
-                            loadCategories();
+                        if(imagePath != null){
+                            MediaManager.get().upload(imagePath).callback(new UploadCallback() {
+                                @Override
+                                public void onStart(String requestId) {
+
+                                }
+
+                                @Override
+                                public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(String requestId, Map resultData) {
+                                    shoe.setImage(resultData.get("secure_url").toString());
+                                    if(database.updateShoe(shoe) != -1){
+                                        loadShoes();
+                                        deleteData();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(String requestId, ErrorInfo error) {
+
+                                }
+
+                                @Override
+                                public void onReschedule(String requestId, ErrorInfo error) {
+
+                                }
+                            }).dispatch();
+                        }else{
+                            shoe.setImage(shoes.get((int) pos).getImage());
+                            if(database.updateShoe(shoe) != -1){
+                                loadShoes();
+                                deleteData();
+                            }
                         }
                     }else{
                         textViewError.setText("Vui lòng nhập đầy đủ thông tin!");
@@ -225,16 +256,9 @@ public class AdminShoe extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(pos != -1){
-                    if(database.deleteShoe(pos) != -1){
+                    if(database.deleteShoe(shoes.get((int) pos).getId()) != -1){
                         loadShoes();
-                        pos = -1;
-                        textViewError.setText("");
-                        editTextName.setText("");
-                        editTextInformation.setText("");
-                        editTextQuantity.setText("");
-                        editTextPrice.setText("");
-                        editTextNote.setText("");
-                        loadCategories();
+                        deleteData();
                     }
                 }else{
                     textViewError.setText("Bạn chưa chọn giày cần xóa!");
@@ -245,14 +269,7 @@ public class AdminShoe extends AppCompatActivity {
         btnDeleteData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pos = -1;
-                textViewError.setText("");
-                editTextName.setText("");
-                editTextInformation.setText("");
-                editTextQuantity.setText("");
-                editTextPrice.setText("");
-                editTextNote.setText("");
-                loadCategories();
+                deleteData();
             }
         });
 
@@ -281,7 +298,7 @@ public class AdminShoe extends AppCompatActivity {
                 shoe.setInformation(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.SHOE_INFORMATION)));
                 shoe.setQuantity(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.SHOE_QUANTITY))));
                 shoe.setPrice(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.SHOE_PRICE))));
-                shoe.setImage("");
+                shoe.setImage(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.SHOE_IMAGE)));
                 shoe.setNote(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.SHOE_NOTE)));
                 for(int i = 0; i < categories.size(); i ++)
                     if(categories.get(i).getId() == Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.SHOE_CATEGORY_ID))))
@@ -337,4 +354,17 @@ public class AdminShoe extends AppCompatActivity {
             }
         }
     });
+
+    public void deleteData(){
+        pos = -1;
+        textViewError.setText("");
+        editTextName.setText("");
+        editTextInformation.setText("");
+        editTextQuantity.setText("");
+        editTextPrice.setText("");
+        editTextNote.setText("");
+        imageView.setImageBitmap(null);
+        imagePath = null;
+        spinner.setSelection(0);
+    }
 }

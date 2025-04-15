@@ -6,7 +6,20 @@
         <State />
       </entry>
       <entry key="AdminCategory">
-        <State />
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\PC\.android\avd\phone.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2025-04-15T10:08:31.914571700Z" />
+        </State>
       </entry>
       <entry key="AdminShoe">
         <State>
@@ -21,7 +34,7 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2025-04-10T14:20:09.011832600Z" />
+          <timeTargetWasSelectedWithDropDown value="2025-04-15T12:16:51.984254600Z" />
         </State>
       </entry>
       <entry key="AdminUser">
@@ -40,7 +53,7 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2025-04-10T14:21:12.198897800Z" />
+          <timeTargetWasSelectedWithDropDown value="2025-04-14T12:55:31.297941300Z" />
         </State>
       </entry>
     </value>

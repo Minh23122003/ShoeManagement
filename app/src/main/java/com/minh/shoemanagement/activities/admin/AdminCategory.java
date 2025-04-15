@@ -35,32 +35,10 @@ public class AdminCategory extends AppCompatActivity {
         database = new MyDatabase(this);
 
         listView = findViewById(R.id.listViewCategory);
-        btnInsert = findViewById(R.id.btnInsertAdminCategory);
-        btnUpdate = findViewById(R.id.btnUpdateAdminCategory);
-        btnDelete = findViewById(R.id.btnDeleteAdminCategory);
-        btnDeleteData = findViewById(R.id.btnDeleteDataCategory);
-        editText = findViewById(R.id.editTextCategoryName);
-        textViewError = findViewById(R.id.textViewUserError);
-
         loadCategories();
 
-
-
-        btnInsert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(editText.getText().toString().length() != 0){
-                    if (database.insertCategory(new Category(-1, editText.getText().toString())) != -1){
-                        loadCategories();
-                        editText.setText("");
-                        textViewError.setText("");
-                    }
-                }else{
-                    textViewError.setText("Bạn chưa nhập danh mục cần thêm!");
-                }
-
-            }
-        });
+        editText = findViewById(R.id.editTextCategoryName);
+        textViewError = findViewById(R.id.textViewUserError);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -70,15 +48,32 @@ public class AdminCategory extends AppCompatActivity {
             }
         });
 
+        btnInsert = findViewById(R.id.btnInsertAdminCategory);
+        btnInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editText.getText().toString().length() != 0){
+                    Category category = getData();
+                    if (database.insertCategory(category) != -1){
+                        loadCategories();
+                        deleteData();
+                    }
+                }else{
+                    textViewError.setText("Bạn chưa nhập danh mục cần thêm!");
+                }
+
+            }
+        });
+
+        btnUpdate = findViewById(R.id.btnUpdateAdminCategory);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(pos != -1){
-                    if(database.updateCategory(new Category(pos, editText.getText().toString())) != -1){
+                    Category category = getData();
+                    if(database.updateCategory(category) != -1){
                         loadCategories();
-                        editText.setText("");
-                        pos = -1;
-                        textViewError.setText("");
+                        deleteData();
                     }
                 }else{
                     textViewError.setText("Bạn chưa chọn danh mục cần sửa!");
@@ -86,28 +81,26 @@ public class AdminCategory extends AppCompatActivity {
             }
         });
 
+        btnDelete = findViewById(R.id.btnDeleteAdminCategory);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(pos != -1){
                     if(database.deleteCategory(pos) != -1){
                         loadCategories();
-                        editText.setText("");
-                        pos = -1;
-                        textViewError.setText("");
+                        deleteData();
                     }
                 }else{
-                    textViewError.setText("Bạn chưa chon danh mục cần xóa!");
+                    textViewError.setText("Bạn chưa chọn danh mục cần xóa!");
                 }
             }
         });
 
+        btnDeleteData = findViewById(R.id.btnDeleteDataCategory);
         btnDeleteData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editText.setText("");
-                pos = -1;
-                textViewError.setText("");
+                deleteData();
             }
         });
 
@@ -132,5 +125,15 @@ public class AdminCategory extends AppCompatActivity {
         }
         if (categories != null)
             listView.setAdapter(new CategoryAdapter(this));
+    }
+
+    public void deleteData(){
+        editText.setText("");
+        textViewError.setText("");
+        pos = -1;
+    }
+
+    public Category getData(){
+        return new Category(pos, editText.getText().toString());
     }
 }

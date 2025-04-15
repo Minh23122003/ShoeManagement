@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class AdminBill extends AppCompatActivity {
     public static ArrayList<ArrayList<String>> arrayLists;
     Button btnStatsUser, btnStatsCategory;
-    ListView listViewStatsByUser;
+    ListView listViewStats;
     public MyDatabase database;
     TextView textView;
     @Override
@@ -28,15 +28,15 @@ public class AdminBill extends AppCompatActivity {
         setContentView(R.layout.activity_admin_bill);
 
         database = new MyDatabase(this);
-        listViewStatsByUser = findViewById(R.id.listViewStats);
+        listViewStats = findViewById(R.id.listViewStats);
+
         btnStatsUser = findViewById(R.id.btnStatsByUser);
-        btnStatsCategory = findViewById(R.id.btnStatsByCategory);
         btnStatsUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 statsByUser();
                 textView = findViewById(R.id.textViewAdminStatsHeader1);
-                textView.setText("Mã người dùng");
+                textView.setText("Id");
                 textView = findViewById(R.id.textViewAdminStatsHeader2);
                 textView.setText("Tài khoản");
                 textView = findViewById(R.id.textViewAdminStatsHeader3);
@@ -44,6 +44,7 @@ public class AdminBill extends AppCompatActivity {
             }
         });
 
+        btnStatsCategory = findViewById(R.id.btnStatsByCategory);
         btnStatsCategory.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +75,7 @@ public class AdminBill extends AppCompatActivity {
             arrayLists.add(arrayList);
         }
         if(arrayLists != null){
-            listViewStatsByUser.setAdapter(new BillAdapter(this));
+            listViewStats.setAdapter(new BillAdapter(this));
         }
     }
 
@@ -94,7 +95,7 @@ public class AdminBill extends AppCompatActivity {
             arrayLists.add(arrayList);
         }
         if(arrayLists != null){
-            listViewStatsByUser.setAdapter(new BillAdapter(this));
+            listViewStats.setAdapter(new BillAdapter(this));
         }
     }
 }

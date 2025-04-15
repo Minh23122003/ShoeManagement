@@ -12,7 +12,7 @@ import com.minh.shoemanagement.activities.LoginActivity;
 import com.minh.shoemanagement.activities.user.UserHome;
 
 public class AdminHome extends AppCompatActivity {
-    Button btnCategory, btnShoe, btnUser, btnBill;
+    Button btnCategory, btnShoe, btnUser, btnBill, btnLogout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +22,7 @@ public class AdminHome extends AppCompatActivity {
         btnShoe = findViewById(R.id.buttonManageShoes);
         btnUser = findViewById(R.id.buttonManageUsers);
         btnBill = findViewById(R.id.buttonManageBills);
+        btnLogout = findViewById(R.id.buttonLogout);
 
         btnCategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +56,7 @@ public class AdminHome extends AppCompatActivity {
             }
         });
 
-        Button buttonLogout = findViewById(R.id.buttonLogout);
-        buttonLogout.setOnClickListener(v -> {
+        btnLogout.setOnClickListener(v -> {
             UserHome.currentUser = null;
             startActivity(new Intent(this, LoginActivity.class));
             finish();

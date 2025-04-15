@@ -101,7 +101,6 @@ public class MyDatabase {
         values.put(DBHelper.USER_ADDRESS, user.getAddress());
         values.put(DBHelper.USER_PHONE, user.getPhone());
         values.put(DBHelper.USER_IS_ADMIN, user.getIsAdmin());
-        values.put(DBHelper.USER_CREATED_DATE, user.getCreatedDate());
 
         return database.update(DBHelper.TABLE_USER, values, DBHelper.USER_ID + " = " + user.getId(), null);
     }

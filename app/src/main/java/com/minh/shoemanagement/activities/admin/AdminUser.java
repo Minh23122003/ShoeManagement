@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.minh.shoemanagement.R;
@@ -39,12 +38,9 @@ public class AdminUser extends AppCompatActivity {
         database = new MyDatabase(this);
 
         listView = findViewById(R.id.listViewUser);
-        btnInsert = findViewById(R.id.btnInsertUser);
-        btnUpdate = findViewById(R.id.btnUpdateUser);
-        btnDelete = findViewById(R.id.btnDeleteUser);
-        btnDeleteData = findViewById(R.id.btnDeleteDataUser);
-        textViewError = findViewById(R.id.textViewUserError);
+        loadUsers();
 
+        textViewError = findViewById(R.id.textViewUserError);
         editTextUsername = findViewById(R.id.editTextUserUsername);
         editTextPassword = findViewById(R.id.editTextUserPassword);
         editTextName = findViewById(R.id.editTextUserName);
@@ -52,45 +48,6 @@ public class AdminUser extends AppCompatActivity {
         editTextPhone = findViewById(R.id.editTextUserPhone);
         radioButtonYes = findViewById(R.id.rdBtnIsAdminYes);
         radioButtonNo = findViewById(R.id.rdBtnIsAdminNo);
-
-        loadUsers();
-
-        btnInsert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(editTextUsername.getText().toString().length() != 0 &&
-                        editTextPassword.getText().toString().length() != 0 &&
-                        editTextName.getText().toString().length() != 0 &&
-                        editTextAddress.getText().toString().length() != 0 &&
-                        editTextPhone.getText().toString().length() != 0){
-                    User user = new User();
-                    user.setId(-1);
-                    user.setUsername(editTextUsername.getText().toString());
-                    user.setPassword(editTextPassword.getText().toString());
-                    user.setName(editTextName.getText().toString());
-                    user.setAddress(editTextAddress.getText().toString());
-                    user.setPhone(editTextPhone.getText().toString());
-                    if(radioButtonYes.isChecked() == true)
-                        user.setIsAdmin(1);
-                    else
-                        user.setIsAdmin(0);
-                    user.setCreatedDate(LocalDate.now().toString());
-                    if(database.insertUser(user) != -1){
-                        loadUsers();
-                        textViewError.setText("");
-                        editTextUsername.setText("");
-                        editTextPassword.setText("");
-                        editTextName.setText("");
-                        editTextAddress.setText("");
-                        editTextPhone.setText("");
-
-                    }
-                }else{
-                    textViewError.setText("Vui lòng nhập đầy đủ thông tin!");
-                }
-
-            }
-        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -108,6 +65,29 @@ public class AdminUser extends AppCompatActivity {
             }
         });
 
+        btnInsert = findViewById(R.id.btnInsertUser);
+        btnInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editTextUsername.getText().toString().length() != 0 &&
+                        editTextPassword.getText().toString().length() != 0 &&
+                        editTextName.getText().toString().length() != 0 &&
+                        editTextAddress.getText().toString().length() != 0 &&
+                        editTextPhone.getText().toString().length() != 0){
+                    User user = getData();
+                    if(database.insertUser(user) != -1){
+                        loadUsers();
+                        deleteData();
+
+                    }
+                }else{
+                    textViewError.setText("Vui lòng nhập đầy đủ thông tin!");
+                }
+
+            }
+        });
+
+        btnUpdate = findViewById(R.id.btnUpdateUser);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,28 +97,10 @@ public class AdminUser extends AppCompatActivity {
                             editTextName.getText().toString().length() != 0 &&
                             editTextAddress.getText().toString().length() != 0 &&
                             editTextPhone.getText().toString().length() != 0){
-                        User user = new User();
-                        user.setId(pos);
-                        user.setUsername(editTextUsername.getText().toString());
-                        user.setPassword(editTextPassword.getText().toString());
-                        user.setName(editTextName.getText().toString());
-                        user.setAddress(editTextAddress.getText().toString());
-                        user.setPhone(editTextPhone.getText().toString());
-                        if(radioButtonYes.isChecked() == true)
-                            user.setIsAdmin(1);
-                        else
-                            user.setIsAdmin(0);
-                        user.setCreatedDate("");
+                        User user = getData();
                         if(database.updateUser(user) != -1){
                             loadUsers();
-                            pos = -1;
-                            textViewError.setText("");
-                            editTextUsername.setText("");
-                            editTextPassword.setText("");
-                            editTextName.setText("");
-                            editTextAddress.setText("");
-                            editTextPhone.setText("");
-                            radioButtonYes.setChecked(true);
+                            deleteData();
                         }
                     }else{
                         textViewError.setText("Vui lòng nhập đầy đủ thông tin!");
@@ -149,20 +111,14 @@ public class AdminUser extends AppCompatActivity {
             }
         });
 
+        btnDelete = findViewById(R.id.btnDeleteUser);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(pos != -1){
                     if(database.deleteUser(pos) != -1){
                         loadUsers();
-                        pos = -1;
-                        textViewError.setText("");
-                        editTextUsername.setText("");
-                        editTextPassword.setText("");
-                        editTextName.setText("");
-                        editTextAddress.setText("");
-                        editTextPhone.setText("");
-                        radioButtonNo.setChecked(true);
+                        deleteData();
                     }
                 }else{
                     textViewError.setText("Bạn chưa chọn người dùng cần xóa!");
@@ -170,17 +126,11 @@ public class AdminUser extends AppCompatActivity {
             }
         });
 
+        btnDeleteData = findViewById(R.id.btnDeleteDataUser);
         btnDeleteData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pos = -1;
-                textViewError.setText("");
-                editTextUsername.setText("");
-                editTextPassword.setText("");
-                editTextName.setText("");
-                editTextAddress.setText("");
-                editTextPhone.setText("");
-                radioButtonNo.setChecked(true);
+                deleteData();
             }
         });
     }
@@ -211,5 +161,33 @@ public class AdminUser extends AppCompatActivity {
         if(users != null){
             listView.setAdapter(new UserAdapter(this));
         }
+    }
+
+    public void deleteData(){
+        pos = -1;
+        textViewError.setText("");
+        editTextUsername.setText("");
+        editTextPassword.setText("");
+        editTextName.setText("");
+        editTextAddress.setText("");
+        editTextPhone.setText("");
+        radioButtonNo.setChecked(true);
+    }
+
+    public User getData(){
+        User user = new User();
+        user.setId(pos);
+        user.setUsername(editTextUsername.getText().toString());
+        user.setPassword(editTextPassword.getText().toString());
+        user.setName(editTextName.getText().toString());
+        user.setAddress(editTextAddress.getText().toString());
+        user.setPhone(editTextPhone.getText().toString());
+        if(radioButtonYes.isChecked() == true)
+            user.setIsAdmin(1);
+        else
+            user.setIsAdmin(0);
+        user.setCreatedDate(LocalDate.now().toString());
+
+        return user;
     }
 }
