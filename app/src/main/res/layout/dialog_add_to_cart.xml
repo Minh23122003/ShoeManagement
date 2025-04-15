@@ -90,12 +90,20 @@
             android:textColor="#000"/>
 
 
-        <EditText
-            android:id="@+id/editTextSize"
+
+
+<!--        <EditText-->
+<!--            android:id="@+id/editTextSize"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:inputType="number"-->
+<!--            android:hint="36"-->
+<!--            android:padding="4dp"-->
+<!--            android:background="@android:drawable/editbox_background_normal"/>-->
+        <Spinner
+            android:id="@+id/spinnerSize"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="36"
             android:padding="4dp"
             android:background="@android:drawable/editbox_background_normal"/>
     </LinearLayout>

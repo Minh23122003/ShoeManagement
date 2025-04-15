@@ -37,6 +37,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShoesDetailActivity extends AppCompatActivity {
 
@@ -120,8 +121,18 @@ public class ShoesDetailActivity extends AppCompatActivity {
         TextView tvShoeCate = dialogView.findViewById(R.id.textViewShoeCategory);
         TextView tvShoeQuantity = dialogView.findViewById(R.id.textViewShoeQuantity);
 
-        EditText edtBillSize = dialogView.findViewById(R.id.editTextSize);
+        //EditText edtBillSize = dialogView.findViewById(R.id.editTextSize);   //update to spinner
+        Spinner spinnerSize = dialogView.findViewById(R.id.spinnerSize);  // replace EditText by Spinner
         EditText edtBillQuantity = dialogView.findViewById(R.id.editTextQuantity);
+
+        //Init Values for Spinner
+        List<String> shoeSizes = new ArrayList<>();
+        for(int i = 35; i <= 45; i++){
+            shoeSizes.add(String.valueOf(i));
+        }
+        ArrayAdapter<String> sizeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, shoeSizes);
+        sizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSize.setAdapter(sizeAdapter);
 
         // Lấy dữ liệu Shoe để hiển thị
         if(shoe!=null){
@@ -142,11 +153,29 @@ public class ShoesDetailActivity extends AppCompatActivity {
         Button buttonConfirm = dialogView.findViewById(R.id.buttonConfirm);
         buttonConfirm.setOnClickListener(v -> {
 
-            if(edtBillSize.getText().toString().isEmpty() || edtBillQuantity.getText().toString().isEmpty()){
-                Toast.makeText(this, "Bạn chưa chọn kích thước hoặc số lượng", Toast.LENGTH_SHORT).show();
+//            if(edtBillSize.getText().toString().isEmpty() || edtBillQuantity.getText().toString().isEmpty()){
+//                Toast.makeText(this, "Bạn chưa chọn kích thước hoặc số lượng", Toast.LENGTH_SHORT).show();
+//            }else{
+//                billSize = Long.parseLong(edtBillSize.getText().toString());
+//                billQuantity = Long.parseLong(edtBillQuantity.getText().toString());
+//
+//                if(addToCart(v) != -1){
+//                    Toast.makeText(this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
+//                    showAfterAddDialog();
+//                    dialog.dismiss();
+//                }else{
+//                    Toast.makeText(this, "Xảy ra lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+
+            String quantityText = edtBillQuantity.getText().toString();
+
+            if(quantityText.isEmpty()){
+                Toast.makeText(this, "Bạn chưa chọn số lượng", Toast.LENGTH_SHORT).show();
             }else{
-                billSize = Long.parseLong(edtBillSize.getText().toString());
-                billQuantity = Long.parseLong(edtBillQuantity.getText().toString());
+                // Lấy size từ spinner
+                billSize = Long.parseLong(spinnerSize.getSelectedItem().toString());
+                billQuantity = Long.parseLong(quantityText);
 
                 if(addToCart(v) != -1){
                     Toast.makeText(this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
