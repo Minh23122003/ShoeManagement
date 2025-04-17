@@ -21,6 +21,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cloudinary.Cloudinary;
@@ -44,7 +46,7 @@ import java.util.Map;
 public class AdminShoe extends AppCompatActivity {
     public static ArrayList<Shoe> shoes;
     public static ArrayList<Category> categories;
-    ListView listView;
+    RecyclerView recyclerView;
     Spinner spinner;
     public MyDatabase database;
     Button btnInsert, btnUpdate, btnDelete, btnDeleteData, btnImage;
@@ -63,11 +65,7 @@ public class AdminShoe extends AppCompatActivity {
         setContentView(R.layout.activity_admin_shoe);
 
         database = new MyDatabase(this);
-        btnInsert = findViewById(R.id.btnInsertAdminShoe);
-        btnUpdate = findViewById(R.id.btnUpdateAdminShoe);
-        btnDelete = findViewById(R.id.btnDeleteAdminShoe);
-        btnDeleteData = findViewById(R.id.btnDeleteDataShoe);
-        listView = findViewById(R.id.listViewAdminShoe);
+
         spinner = findViewById(R.id.spinnerCategory);
         editTextName = findViewById(R.id.editTextAdminShoeName);
         editTextInformation = findViewById(R.id.editTextAdminShoeInformation);
@@ -77,6 +75,9 @@ public class AdminShoe extends AppCompatActivity {
         textViewError = findViewById(R.id.textViewAdminShoeError);
         imageView = findViewById(R.id.imageViewAdminShoe);
         btnImage = findViewById(R.id.btnAdminShoeImage);
+
+        recyclerView = findViewById(R.id.recyclerViewAdminShoe);
+        recyclerView.setLayoutManager(new LinearLayoutManager(AdminShoe.this));
 
         Map config = new HashMap();
         config.put("cloud_name", "dyehwnue5");
@@ -108,6 +109,7 @@ public class AdminShoe extends AppCompatActivity {
             }
         });
 
+        btnInsert = findViewById(R.id.btnInsertAdminShoe);
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,23 +172,7 @@ public class AdminShoe extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                pos = position;
-                editTextName.setText(shoes.get(position).getName());
-                editTextInformation.setText(shoes.get(position).getInformation());
-                editTextQuantity.setText(String.valueOf(shoes.get(position).getQuantity()));
-                editTextPrice.setText(String.valueOf(shoes.get(position).getPrice()));
-                editTextNote.setText(shoes.get(position).getNote());
-                for(int i = 0; i < categories.size(); i++){
-                    if(categories.get(i).getId() == shoes.get(position).getCategory().getId())
-                        spinner.setSelection(i);
-                }
-                Glide.with(getApplicationContext()).load(shoes.get(position).getImage()).into(imageView);
-            }
-        });
-
+        btnUpdate = findViewById(R.id.btnUpdateAdminShoe);
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,7 +183,7 @@ public class AdminShoe extends AppCompatActivity {
                             !editTextPrice.getText().toString().isEmpty() &&
                             !editTextNote.getText().toString().isEmpty()){
                         Shoe shoe = new Shoe();
-                        shoe.setId(shoes.get((int) pos).getId());
+                        shoe.setId(pos);
                         shoe.setName(editTextName.getText().toString());
                         shoe.setInformation(editTextInformation.getText().toString());
                         shoe.setQuantity(Long.parseLong(editTextQuantity.getText().toString()));
@@ -237,7 +223,9 @@ public class AdminShoe extends AppCompatActivity {
                                 }
                             }).dispatch();
                         }else{
-                            shoe.setImage(shoes.get((int) pos).getImage());
+                            for(int i = 0; i < shoes.size(); i++)
+                                if(shoes.get(i).getId() == pos)
+                                    shoe.setImage(shoes.get((int) i).getImage());
                             if(database.updateShoe(shoe) != -1){
                                 loadShoes();
                                 deleteData();
@@ -252,11 +240,12 @@ public class AdminShoe extends AppCompatActivity {
             }
         });
 
+        btnDelete = findViewById(R.id.btnDeleteAdminShoe);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(pos != -1){
-                    if(database.deleteShoe(shoes.get((int) pos).getId()) != -1){
+                    if(database.deleteShoe(pos) != -1){
                         loadShoes();
                         deleteData();
                     }
@@ -266,6 +255,7 @@ public class AdminShoe extends AppCompatActivity {
             }
         });
 
+        btnDeleteData = findViewById(R.id.btnDeleteDataShoe);
         btnDeleteData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,8 +270,6 @@ public class AdminShoe extends AppCompatActivity {
             }
         });
     }
-
-
 
     public void loadShoes(){
         if(shoes == null){
@@ -308,7 +296,23 @@ public class AdminShoe extends AppCompatActivity {
         }
 
         if(shoes != null){
-            listView.setAdapter(new ShoeAdapter(this));
+            ShoeAdapter adapter = new ShoeAdapter(shoes, new ShoeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Shoe shoe) {
+                    pos = shoe.getId();
+                    editTextName.setText(shoe.getName());
+                    editTextInformation.setText(shoe.getInformation());
+                    editTextQuantity.setText(String.valueOf(shoe.getQuantity()));
+                    editTextPrice.setText(String.valueOf(shoe.getPrice()));
+                    editTextNote.setText(shoe.getNote());
+                    for(int i = 0; i < categories.size(); i++){
+                        if(categories.get(i).getId() == shoe.getCategory().getId())
+                            spinner.setSelection(i);
+                    }
+                    Glide.with(getApplicationContext()).load(shoe.getImage()).into(imageView);
+                }
+            });
+            recyclerView.setAdapter(adapter);
         }
     }
 

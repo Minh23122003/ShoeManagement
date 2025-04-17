@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -17,42 +18,54 @@ import com.minh.shoemanagement.entities.Category;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryAdapter extends BaseAdapter {
-        LayoutInflater inflater;
-    TextView textView;
-    Context context;
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
+    private ArrayList<Category> categories;
+    private OnItemClickListener listener;
 
-    public CategoryAdapter(Context context){
-        inflater = LayoutInflater.from(context);
-        this.context = context;
+    public interface OnItemClickListener{
+        void onItemClick(Category category);
+    }
+
+    public CategoryAdapter(ArrayList<Category> categories, OnItemClickListener listener){
+        this.categories = categories;
+        this.listener = listener;
+    }
+
+    @NonNull
+    @Override
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_admin, parent, false);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return AdminCategory.categories.size();
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.bind(categories.get(position), listener);
     }
 
     @Override
-    public Object getItem(int position) {
-        return AdminCategory.categories.get(position);
+    public int getItemCount() {
+        return categories.size();
     }
 
-    @Override
-    public long getItemId(int position) {
-        return AdminCategory.categories.get(position).getId();
-    }
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
+        public TextView textViewId, textViewName;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View viewCategory;
-        if(convertView == null)
-            viewCategory = View.inflate(parent.getContext(), R.layout.item_category_admin,  null);
-        else
-            viewCategory = convertView;
-        textView = (TextView) viewCategory.findViewById(R.id.textViewCategoryId);
-        textView.setText(String.valueOf(AdminCategory.categories.get(position).getId()));
-        textView = (TextView) viewCategory.findViewById(R.id.textViewCategoryName);
-        textView.setText(AdminCategory.categories.get(position).getName());
-        return viewCategory;
+        public MyViewHolder(View itemView){
+            super(itemView);
+            textViewId = itemView.findViewById(R.id.textViewCategoryId);
+            textViewName = itemView.findViewById(R.id.textViewCategoryName);
+        }
+
+        public void bind(final Category category, final OnItemClickListener listener){
+            textViewId.setText(String.valueOf(category.getId()));
+            textViewName.setText(category.getName());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(category);
+                }
+            });
+        }
     }
 }

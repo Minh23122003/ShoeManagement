@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.minh.shoemanagement.R;
 import com.minh.shoemanagement.activities.admin.adapter.CategoryAdapter;
@@ -21,12 +23,13 @@ import java.util.ArrayList;
 
 public class AdminCategory extends AppCompatActivity {
     public static ArrayList<Category> categories;
-    ListView listView;
+    RecyclerView recyclerView;
     public MyDatabase database;
     Button btnInsert, btnUpdate, btnDelete, btnDeleteData;
     EditText editText;
     TextView textViewError;
     private static long pos = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,19 +37,12 @@ public class AdminCategory extends AppCompatActivity {
 
         database = new MyDatabase(this);
 
-        listView = findViewById(R.id.listViewCategory);
-        loadCategories();
-
         editText = findViewById(R.id.editTextCategoryName);
         textViewError = findViewById(R.id.textViewUserError);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                editText.setText(categories.get(position).getName());
-                pos = categories.get(position).getId();
-            }
-        });
+        recyclerView = findViewById(R.id.recyclerViewAdminCategory);
+        recyclerView.setLayoutManager(new LinearLayoutManager(AdminCategory.this));
+        loadCategories();
 
         btnInsert = findViewById(R.id.btnInsertAdminCategory);
         btnInsert.setOnClickListener(new View.OnClickListener() {
@@ -103,8 +99,6 @@ public class AdminCategory extends AppCompatActivity {
                 deleteData();
             }
         });
-
-
     }
 
     public void loadCategories(){
@@ -123,8 +117,16 @@ public class AdminCategory extends AppCompatActivity {
                 categories.add(category);
             }
         }
-        if (categories != null)
-            listView.setAdapter(new CategoryAdapter(this));
+        if (categories != null){
+            CategoryAdapter adapter = new CategoryAdapter(categories, new CategoryAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Category category) {
+                    editText.setText(category.getName());
+                    pos = category.getId();
+                }
+            });
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     public void deleteData(){

@@ -11,6 +11,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.minh.shoemanagement.R;
 import com.minh.shoemanagement.activities.admin.adapter.UserAdapter;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 
 public class AdminUser extends AppCompatActivity {
     public static ArrayList<User> users;
-    ListView listView;
+    RecyclerView recyclerView;
     public MyDatabase database;
     Button btnInsert, btnUpdate, btnDelete, btnDeleteData;
     EditText editTextUsername, editTextPassword, editTextName, editTextAddress, editTextPhone;
@@ -37,9 +39,6 @@ public class AdminUser extends AppCompatActivity {
 
         database = new MyDatabase(this);
 
-        listView = findViewById(R.id.listViewUser);
-        loadUsers();
-
         textViewError = findViewById(R.id.textViewUserError);
         editTextUsername = findViewById(R.id.editTextUserUsername);
         editTextPassword = findViewById(R.id.editTextUserPassword);
@@ -49,21 +48,9 @@ public class AdminUser extends AppCompatActivity {
         radioButtonYes = findViewById(R.id.rdBtnIsAdminYes);
         radioButtonNo = findViewById(R.id.rdBtnIsAdminNo);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                pos = users.get(position).getId();
-                editTextUsername.setText(users.get(position).getUsername());
-                editTextPassword.setText(users.get(position).getPassword());
-                editTextName.setText(users.get(position).getName());
-                editTextAddress.setText(users.get(position).getAddress());
-                editTextPhone.setText(users.get(position).getPhone());
-                if(users.get(position).getIsAdmin() == 0)
-                    radioButtonNo.setChecked(true);
-                else
-                    radioButtonYes.setChecked(true);
-            }
-        });
+        recyclerView = findViewById(R.id.recyclerViewAdminUser);
+        recyclerView.setLayoutManager(new LinearLayoutManager(AdminUser.this));
+        loadUsers();
 
         btnInsert = findViewById(R.id.btnInsertUser);
         btnInsert.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +146,22 @@ public class AdminUser extends AppCompatActivity {
         }
 
         if(users != null){
-            listView.setAdapter(new UserAdapter(this));
+            UserAdapter adapter = new UserAdapter(users, new UserAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(User user) {
+                    pos = user.getId();
+                    editTextUsername.setText(user.getUsername());
+                    editTextPassword.setText(user.getPassword());
+                    editTextName.setText(user.getName());
+                    editTextAddress.setText(user.getAddress());
+                    editTextPhone.setText(user.getPhone());
+                    if(user.getIsAdmin() == 0)
+                        radioButtonNo.setChecked(true);
+                    else
+                        radioButtonYes.setChecked(true);
+                }
+            });
+            recyclerView.setAdapter(adapter);
         }
     }
 

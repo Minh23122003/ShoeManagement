@@ -4,50 +4,68 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.minh.shoemanagement.R;
 import com.minh.shoemanagement.activities.admin.AdminShoe;
+import com.minh.shoemanagement.entities.Category;
 import com.minh.shoemanagement.entities.Shoe;
 
-public class ShoeAdapter extends BaseAdapter {
-    LayoutInflater inflater;
-    Context context;
-    TextView textView;
+import java.util.ArrayList;
 
-    public ShoeAdapter(Context context){
-        inflater = LayoutInflater.from(context);
-        this.context = context;
-    }
-    @Override
-    public int getCount() {
-        return AdminShoe.shoes.size();
+public class ShoeAdapter extends RecyclerView.Adapter<ShoeAdapter.MyViewHolder> {
+    private ArrayList<Shoe> shoes;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener{
+        void onItemClick(Shoe shoe);
     }
 
-    @Override
-    public Object getItem(int position) {
-        return AdminShoe.shoes.get(position);
+    public ShoeAdapter(ArrayList<Shoe> shoes, OnItemClickListener listener) {
+        this.shoes = shoes;
+        this.listener = listener;
     }
 
+    @NonNull
     @Override
-    public long getItemId(int position) {
-        return AdminShoe.shoes.get(position).getId();
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shoe_admin, parent, false);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View viewShoe;
-        if(convertView == null){
-            viewShoe = View.inflate(parent.getContext(), R.layout.item_shoe_admin, null);
-        }else{
-            viewShoe = convertView;
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.bind(shoes.get(position), listener);
+    }
+
+    @Override
+    public int getItemCount() {
+        return shoes.size();
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
+        public TextView textViewId, textViewName;
+
+        public MyViewHolder(View itemView){
+            super(itemView);
+            textViewId = itemView.findViewById(R.id.textViewAdminShoeId);
+            textViewName = itemView.findViewById(R.id.textViewAdminShoeName);
         }
 
-        textView = viewShoe.findViewById(R.id.textViewAdminShoeId);
-        textView.setText(String.valueOf(AdminShoe.shoes.get(position).getId()));
-        textView = viewShoe.findViewById(R.id.textViewAdminShoeName);
-        textView.setText(AdminShoe.shoes.get(position).getName());
-        return viewShoe;
+        public void bind(final Shoe shoe, final OnItemClickListener listener){
+            textViewId.setText(String.valueOf(shoe.getId()));
+            textViewName.setText(shoe.getName());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(shoe);
+                }
+            });
+        }
     }
 }

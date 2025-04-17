@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.minh.shoemanagement.R;
 import com.minh.shoemanagement.activities.admin.adapter.BillAdapter;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 public class AdminBill extends AppCompatActivity {
     public static ArrayList<ArrayList<String>> arrayLists;
     Button btnStatsUser, btnStatsCategory;
-    ListView listViewStats;
+    RecyclerView recyclerView;
     public MyDatabase database;
     TextView textView;
     @Override
@@ -28,7 +30,8 @@ public class AdminBill extends AppCompatActivity {
         setContentView(R.layout.activity_admin_bill);
 
         database = new MyDatabase(this);
-        listViewStats = findViewById(R.id.listViewStats);
+        recyclerView = findViewById(R.id.recyclerViewAdminBill);
+        recyclerView.setLayoutManager(new LinearLayoutManager(AdminBill.this));
 
         btnStatsUser = findViewById(R.id.btnStatsByUser);
         btnStatsUser.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +78,8 @@ public class AdminBill extends AppCompatActivity {
             arrayLists.add(arrayList);
         }
         if(arrayLists != null){
-            listViewStats.setAdapter(new BillAdapter(this));
+            BillAdapter adapter = new BillAdapter(arrayLists);
+            recyclerView.setAdapter(adapter);
         }
     }
 
@@ -95,7 +99,8 @@ public class AdminBill extends AppCompatActivity {
             arrayLists.add(arrayList);
         }
         if(arrayLists != null){
-            listViewStats.setAdapter(new BillAdapter(this));
+            BillAdapter adapter = new BillAdapter(arrayLists);
+            recyclerView.setAdapter(adapter);
         }
     }
 }
